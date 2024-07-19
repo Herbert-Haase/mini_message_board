@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Homepage</title>
+  </head>
+  <body>
+    <ul>
+      <% locals.messages.forEach((message)=>{%>
+      <li>User: <%= message.user %></li>
+      <li>Text: <%= message.text %></li>
+      <li>Date: <%= message.added.toDateString() %></li>
+      <li>
+        <a
+          href="/user/?user=<%= encodeURIComponent(message.user) %>&text=<%= encodeURIComponent(message.text) %>&date=<%= encodeURIComponent(message.added.toDateString()) %>"
+          >Details</a
+        >
+      </li>
+      <br />
+      <%})%>
+      <a href="/new">Create New User</a>
+    </ul>
+  </body>
+</html>
