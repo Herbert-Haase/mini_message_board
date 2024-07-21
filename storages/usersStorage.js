@@ -19,6 +19,21 @@ class UsersStorage {
   getUser(id) {
     return this.storage[id];
   }
+  searchUser(firstName = "", lastName = "", email = "") {
+    const searchItems = { firstName, lastName, email };
+    const allUsers = this.getUsers();
+    const SearchUsers = [];
+    Object.keys(searchItems).map((sItem) => {
+      allUsers.map((user) => {
+        if (user[sItem] === searchItems[sItem]) {
+          if (!SearchUsers.some((searchUser) => searchUser.id === user.id)) {
+            SearchUsers.push(user);
+          }
+        }
+      });
+    });
+    return SearchUsers;
+  }
 
   updateUser(id, { firstName, lastName, email, age = "", bio = "" }) {
     this.storage[id] = { id, firstName, lastName, email, age, bio };

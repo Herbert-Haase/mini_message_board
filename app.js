@@ -15,6 +15,17 @@ app.get("/", (req, res) => {
     users: usersStorage.getUsers(),
   });
 });
+let searchUsers;
+
+app.post("/users/search", (req, res) => {
+  const { firstName, lastName, email } = req.body;
+  searchUsers = usersStorage.searchUser(firstName, lastName, email);
+  res.redirect("/users/search");
+});
+
+app.get("/users/search", (req, res) => {
+  res.render("search", { users: searchUsers });
+});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Express app listening on port ${PORT}!`));
