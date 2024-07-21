@@ -1,23 +1,18 @@
+// app.js
 const express = require("express");
-const path = require("path");
-
-const indexRouter = require("./routes/index");
-const newRouter = require("./routes/new");
-
 const app = express();
+const usersRouter = require("./routes/usersRouter");
+const usersStorage = require("./storages/usersStorage");
 
-app.use(express.static(path.join(__dirname, "views")));
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-
-app.use("/", indexRouter);
-app.use("/new", newRouter);
-
-app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
-
-const PORT = 3000;
-
-app.listen(PORT, () => {
-  console.log(`Server running on localhost:${PORT}`);
+app.use(express.urlencoded({ extended: true }));
+app.use("/users", usersRouter);
+app.get("/", (req, res) => {
+  res.render("index", {
+    title: "User List",
+    users: usersStorage.getUsers(),
+  });
 });
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Express app listening on port ${PORT}!`));
