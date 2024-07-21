@@ -2,6 +2,22 @@
 <%- include("partials/error") %>
 <form action="/users/<%= user.id %>/update" method="POST">
   <input type="text" name="firstName" value="<%= user.firstName %>" required />
+  <br />
   <input type="text" name="lastName" value="<%= user.lastName %>" required />
+  <br />
+  <input type="email" name="email" value="<%= user.email %>" required />
+  <br />
+  <input
+    type="number"
+    name="age"
+    min="18"
+    max="120"
+    value="<%= locals.user.age %>"
+  />
+  <br />
+  <textarea name="bio" id="bio" maxlength="200">
+<%= locals.user.bio %></textarea
+  >
+  <br />
   <button type="submit">Update User</button>
 </form>

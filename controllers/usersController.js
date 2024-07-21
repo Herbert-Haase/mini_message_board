@@ -16,6 +16,9 @@ exports.usersUpdateGet = asyncHandler(async (req, res) => {
 
 const alphaErr = "must only contain letters.";
 const lengthErr = "must be between 1 and 10 characters.";
+const emailErr = "Not a valid email adress";
+const ageErr = "Age must be a number and between 18 and 120.";
+const bioErr = "bio can not be longer than 200 characters";
 
 const validateUser = [
   body("firstName")
@@ -30,6 +33,17 @@ const validateUser = [
     .withMessage(`Last name ${alphaErr}`)
     .isLength({ min: 1, max: 10 })
     .withMessage(`Last name ${lengthErr}`),
+  body("email").trim().isEmail().withMessage(emailErr),
+  body("age")
+    .optional({ values: "falsy" })
+    .trim()
+    .isInt({ min: 18, max: 120, allow_leading_zeroes: false })
+    .withMessage(ageErr),
+  body("bio")
+    .optional({ values: "falsy" })
+    .trim()
+    .isLength({ max: 200 })
+    .withMessage(bioErr),
 ];
 // We can pass an entire array of middleware validations to our controller.
 exports.usersCreatePost = [
@@ -42,8 +56,8 @@ exports.usersCreatePost = [
         errors: errors.array(),
       });
     }
-    const { firstName, lastName } = req.body;
-    usersStorage.addUser({ firstName, lastName });
+    const { firstName, lastName, email, age, bio } = req.body;
+    usersStorage.addUser({ firstName, lastName, email, age, bio });
     res.redirect("/");
   }),
 ];
@@ -59,8 +73,14 @@ exports.usersUpdatePost = [
         user: user,
       });
     }
-    const { firstName, lastName } = req.body;
-    usersStorage.updateUser(req.params.id, { firstName, lastName });
+    const { firstName, lastName, email, age, bio } = req.body;
+    usersStorage.updateUser(req.params.id, {
+      firstName,
+      lastName,
+      email,
+      age,
+      bio,
+    });
     res.redirect("/");
   }),
 ];

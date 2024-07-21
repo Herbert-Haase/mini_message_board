@@ -6,9 +6,11 @@
     <!-- In views/index.ejs -->
     <ul>
       <% if (locals.users) {%> <% users.forEach(function(user) { %>
-      <li>
-        ID: <%= user.id %>, Name: <%= user.firstName %> <%= user.lastName %>
-      </li>
+      <li>ID: <%= user.id %></li>
+      <li>Name: <%= user.firstName %> <%= user.lastName %></li>
+      <li>Email: <%= user.email %></li>
+      <li>Age: <%= user.age %></li>
+      <li>Bio: <%= user.bio %></li>
       <a href="/users/<%= user.id %>/update">Update</a>
       <!-- This time we're sending a POST request to our route, so we need a form. -->
       <form
